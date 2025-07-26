@@ -63,17 +63,6 @@ A modern, full-stack task management application built with React, TypeScript, N
 }
 ```
 
-**Response:**
-```json
-{
-  "token": "jwt_token_here",
-  "user": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "user@example.com"
-  }
-}
-```
 
 ### User Routes (`/users`)
 | Method | Endpoint | Description | Auth Required |
@@ -166,7 +155,7 @@ npm install
 3. **Set up environment variables:**
 Create a `.env` file in the backend directory:
 ```env
-DATABASE_URL="postgresql://postgres:password@localhost:5432/taskmanager"
+DATABASE_URL="postgresql://postgres:password@localhost:5432/react-node-test"
 JWT_SECRET="your-secret-key"
 JWT_EXPIRES_IN="1d"
 NODE_ENV="development"
