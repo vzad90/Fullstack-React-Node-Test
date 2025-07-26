@@ -9,7 +9,7 @@ A modern, full-stack task management application built with React, TypeScript, N
 - **User Management**: Create, read, update, delete users
 - **Task Management**: Full CRUD operations for tasks with status tracking
 - **Database**: PostgreSQL with Prisma ORM
-- **API Security**: Protected routes with middleware
+- **API Security**: Protected routes with middleware using JWT
 - **Error Handling**: Comprehensive error handling and validation
 - **Testing**: Jest test suite with coverage reporting
 
