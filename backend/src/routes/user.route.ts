@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {createTask, deleteTask, getTask, getTasks, updateTask} from "../controllers/task.controller";
-import {createUser, deleteUser, getUser, getUsers, updateUser} from "../controllers/user.controller";
+import {createUser, deleteUser, getUserById, getUsers, loginUser, updateUser} from "../controllers/user.controller";
+import {protect} from "../middleware/auth";
 
 const userRouter = Router();
 
@@ -11,26 +12,25 @@ userRouter.post('/create', async (req, res) => {
     res.send(result);
 });
 
-userRouter.get('/', async (req, res) => {
-
+userRouter.get('/', protect, async (req, res) => {
     const result = await getUsers();
     res.send(result);
 });
 
-userRouter.get('/:user_id', async (req, res) => {
-    const {user_id} = req.params;
-    const result = await getUser(Number(user_id));
+userRouter.get('/get-user-data', protect, async (req, res) => {
+    const userId = req.user?.userId || -1;
+    const result = await getUserById(userId);
     res.send(result);
 });
 
-userRouter.put('/:user_id', async (req, res) => {
+userRouter.put('/:user_id', protect, async (req, res) => {
     const {user_id} = req.params;
     const {name, email, password} = req.body;
     const result = await updateUser({name, email, password, id: Number(user_id)});
     res.send(result);
 })
 
-userRouter.delete('/:user_id', async (req, res) => {
+userRouter.delete('/:user_id', protect, async (req, res) => {
     const {user_id} = req.params;
     const result = await deleteUser(Number(user_id));
     res.send(result);

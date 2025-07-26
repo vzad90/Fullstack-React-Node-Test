@@ -26,14 +26,25 @@ export function getTaskByIdFromDb(task_id: number) {
     });
 }
 
+export function getTaskByUserIdFromDb(user_id: number) {
+    return prisma.task.findMany({
+        where: {
+            userId: user_id
+        },
+        orderBy: {
+            id: 'desc'
+        }
+    });
+}
+
 export function updateTaskInDb({
                                    id,
                                    description,
                                    title,
                                    status,
-    userId
+                                    userId
                                }: IUpdateTask) {
-    console.log(status)
+    console.log(userId, id)
     return prisma.task.update({
         where: {
             id,

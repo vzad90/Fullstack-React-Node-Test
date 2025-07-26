@@ -1,33 +1,47 @@
-import prisma from "../client";
-import {
-    createTaskInDb,
-    deleteTaskFromDb,
-    getAllTasksFromDb,
-    getTaskByIdFromDb,
-    updateTaskInDb
-} from "../models/task.model";
-import {Status} from "@prisma/client";
-import {IUpdateTask, IUpdateUser} from "../interfaces";
+import bcrypt from 'bcryptjs';
+import {IUpdateUser} from "../interfaces";
 import {
     createUserInDb,
     deleteUserFromDb,
-    getAllUsersFromDb,
+    getAllUsersFromDb, getUserByEmailFromDb,
     getUserByIdFromDb,
     updateUserInDb
 } from "../models/user.model";
+import {generateToken} from "../utils/jwt";
 
-export  function createUser(name: string, email: string, password: string) {
 
+export async function createUser(name: string, email: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    return createUserInDb(name, email, password);
+    const user = await createUserInDb(name, email, hashedPassword);
+
+    const token = generateToken({userId: user.id})
+
+    return {token}
 }
 
 export async function getUsers() {
     return getAllUsersFromDb();
 }
 
-export function getUser(user_id: number) {
+export function getUserById(user_id: number) {
     return getUserByIdFromDb(user_id)
+}
+
+export async function loginUser(user_email: string, user_password: string) {
+    const user = await getUserByEmailFromDb(user_email)
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const valid = bcrypt.compare(user_password, user.password);
+
+    const token = generateToken({userId: user.id})
+
+    return {token}
+
+
 }
 
 export function updateUser({name, email, password, id}: IUpdateUser) {

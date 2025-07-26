@@ -25,6 +25,14 @@ export function getUserByIdFromDb(user_id: number) {
     });
 }
 
+export function getUserByEmailFromDb(user_email: string) {
+    return prisma.user.findUnique({
+        where: {
+            email: user_email
+        }
+    });
+}
+
 export function updateUserInDb({
                                    id,
                                    name,
